@@ -1,0 +1,1171 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RESODE CRM</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --green: #1a7a4a;
+  --green-light: #e8f5ee;
+  --green-mid: #2d9e63;
+  --green-dark: #0f4d2e;
+  --amber: #d97706;
+  --amber-light: #fef3c7;
+  --red: #dc2626;
+  --red-light: #fee2e2;
+  --blue: #1d4ed8;
+  --blue-light: #dbeafe;
+  --purple: #7c3aed;
+  --purple-light: #ede9fe;
+  --gray-50: #f8fafc;
+  --gray-100: #f1f5f9;
+  --gray-200: #e2e8f0;
+  --gray-300: #cbd5e1;
+  --gray-400: #94a3b8;
+  --gray-500: #64748b;
+  --gray-600: #475569;
+  --gray-700: #334155;
+  --gray-800: #1e293b;
+  --gray-900: #0f172a;
+  --bg: #f0f4f0;
+  --surface: #ffffff;
+  --border: #d4e0d4;
+  --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 6px rgba(0,0,0,0.05), 0 2px 4px rgba(0,0,0,0.04);
+  --radius: 10px;
+  --radius-sm: 6px;
+  --font-display: 'Syne', sans-serif;
+  --font-mono: 'DM Mono', monospace;
+  --sidebar-w: 220px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-display); background: var(--bg); color: var(--gray-800); min-height: 100vh; display: flex; font-size: 14px; }
+
+/* SIDEBAR */
+#sidebar {
+  width: var(--sidebar-w); min-height: 100vh; background: var(--green-dark);
+  display: flex; flex-direction: column; position: fixed; left: 0; top: 0; bottom: 0;
+  z-index: 100; transition: transform .25s;
+}
+.sidebar-logo {
+  padding: 20px 18px 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.sidebar-logo .brand { font-size: 20px; font-weight: 800; color: #fff; letter-spacing: -0.5px; }
+.sidebar-logo .sub { font-size: 10px; color: rgba(255,255,255,0.5); font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; }
+.sidebar-logo .badge-entity { display: inline-block; font-size: 9px; font-family: var(--font-mono); padding: 2px 6px; background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.7); border-radius: 4px; margin-top: 6px; }
+
+.sidebar-nav { flex: 1; padding: 12px 0; }
+.nav-section { font-size: 9px; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 1.5px; color: rgba(255,255,255,0.35); padding: 12px 18px 4px; }
+.nav-item {
+  display: flex; align-items: center; gap: 10px; padding: 9px 18px;
+  color: rgba(255,255,255,0.65); cursor: pointer; border-left: 3px solid transparent;
+  transition: all .15s; font-size: 13.5px; font-weight: 600;
+}
+.nav-item:hover { color: #fff; background: rgba(255,255,255,0.06); }
+.nav-item.active { color: #fff; background: rgba(255,255,255,0.1); border-left-color: var(--green-mid); }
+.nav-item svg { width: 16px; height: 16px; opacity: .8; flex-shrink: 0; }
+.nav-badge { margin-left: auto; background: var(--green-mid); color: #fff; font-size: 10px; font-family: var(--font-mono); padding: 1px 6px; border-radius: 10px; }
+.nav-badge.urgent { background: var(--red); }
+
+.sidebar-footer { padding: 14px 18px; border-top: 1px solid rgba(255,255,255,0.08); }
+.sidebar-user { font-size: 12px; color: rgba(255,255,255,0.5); font-family: var(--font-mono); }
+.sidebar-user strong { color: rgba(255,255,255,0.85); display: block; font-size: 13px; }
+
+/* MAIN */
+#main { margin-left: var(--sidebar-w); flex: 1; display: flex; flex-direction: column; min-height: 100vh; }
+
+/* TOPBAR */
+#topbar {
+  background: var(--surface); border-bottom: 1px solid var(--border);
+  padding: 0 24px; height: 56px; display: flex; align-items: center; gap: 16px;
+  position: sticky; top: 0; z-index: 50; box-shadow: var(--shadow);
+}
+.topbar-title { font-size: 18px; font-weight: 800; color: var(--green-dark); flex: 1; }
+.topbar-title span { font-size: 12px; font-weight: 400; color: var(--gray-400); font-family: var(--font-mono); margin-left: 8px; }
+.topbar-actions { display: flex; gap: 8px; align-items: center; }
+
+/* BUTTONS */
+.btn { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: var(--radius-sm); font-family: var(--font-display); font-size: 13px; font-weight: 600; cursor: pointer; border: none; transition: all .15s; }
+.btn-primary { background: var(--green); color: #fff; }
+.btn-primary:hover { background: var(--green-mid); }
+.btn-secondary { background: var(--gray-100); color: var(--gray-700); border: 1px solid var(--gray-200); }
+.btn-secondary:hover { background: var(--gray-200); }
+.btn-danger { background: var(--red-light); color: var(--red); border: 1px solid #fca5a5; }
+.btn-danger:hover { background: #fca5a5; }
+.btn-sm { padding: 4px 10px; font-size: 12px; }
+.btn-icon { padding: 6px; background: transparent; border: none; cursor: pointer; color: var(--gray-500); border-radius: 6px; display: inline-flex; }
+.btn-icon:hover { background: var(--gray-100); color: var(--gray-800); }
+.btn-icon svg { width: 16px; height: 16px; }
+
+/* CONTENT */
+#content { padding: 24px; flex: 1; }
+
+/* CARDS */
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); }
+.card-header { padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
+.card-title { font-size: 15px; font-weight: 700; color: var(--gray-800); flex: 1; }
+.card-body { padding: 20px; }
+
+/* STATS ROW */
+.stats-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 20px; }
+.stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; position: relative; overflow: hidden; }
+.stat-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--accent, var(--green)); }
+.stat-card .stat-label { font-size: 10px; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 1px; color: var(--gray-400); }
+.stat-card .stat-value { font-size: 28px; font-weight: 800; color: var(--gray-800); margin: 4px 0 2px; line-height: 1; }
+.stat-card .stat-sub { font-size: 11px; color: var(--gray-400); }
+
+/* PIPELINE COLUMNS */
+.pipeline-wrap { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+.pipeline-col { background: var(--gray-50); border: 1px solid var(--border); border-radius: var(--radius); }
+.pipeline-col-header { padding: 10px 14px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+.pipeline-col-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; font-family: var(--font-mono); }
+.pipeline-count { font-size: 11px; font-family: var(--font-mono); background: var(--gray-200); padding: 1px 7px; border-radius: 10px; color: var(--gray-600); }
+.pipeline-col-body { padding: 10px; display: flex; flex-direction: column; gap: 8px; min-height: 120px; }
+.pipeline-card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm);
+  padding: 10px 12px; cursor: pointer; transition: all .15s; position: relative;
+}
+.pipeline-card:hover { border-color: var(--green); box-shadow: 0 0 0 2px rgba(26,122,74,0.1); transform: translateY(-1px); }
+.pipeline-card.relance { border-left: 3px solid var(--amber); }
+.pipeline-card.urgent-flag { border-left: 3px solid var(--red); }
+.pc-name { font-size: 13px; font-weight: 700; color: var(--gray-800); }
+.pc-sector { font-size: 10px; font-family: var(--font-mono); color: var(--gray-400); margin-top: 2px; }
+.pc-meta { display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap; }
+.tag { font-size: 10px; padding: 2px 7px; border-radius: 4px; font-family: var(--font-mono); font-weight: 500; }
+.tag-resode { background: #dcfce7; color: #166534; }
+.tag-cstmd { background: #dbeafe; color: #1e40af; }
+.tag-relance { background: var(--amber-light); color: var(--amber); }
+.tag-sector { background: var(--gray-100); color: var(--gray-600); }
+.pc-date { font-size: 10px; font-family: var(--font-mono); color: var(--gray-400); margin-top: 4px; }
+
+/* TABLE */
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; }
+thead th { padding: 10px 14px; text-align: left; font-size: 11px; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.8px; color: var(--gray-400); background: var(--gray-50); border-bottom: 1px solid var(--border); white-space: nowrap; }
+tbody tr { border-bottom: 1px solid var(--gray-100); transition: background .1s; cursor: pointer; }
+tbody tr:hover { background: var(--gray-50); }
+tbody td { padding: 10px 14px; font-size: 13px; color: var(--gray-700); }
+tbody td strong { color: var(--gray-900); font-weight: 700; }
+.status-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 6px; }
+
+/* STATUS COLORS */
+.s-froid { color: var(--gray-500); }
+.s-froid .status-dot { background: var(--gray-300); }
+.s-contact { color: var(--blue); }
+.s-contact .status-dot { background: var(--blue); }
+.s-devis { color: var(--amber); }
+.s-devis .status-dot { background: var(--amber); }
+.s-client { color: var(--green); }
+.s-client .status-dot { background: var(--green); }
+.s-inactif { color: var(--gray-400); }
+.s-inactif .status-dot { background: var(--gray-200); }
+
+/* MODAL */
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 200;
+  display: none; align-items: center; justify-content: center; padding: 20px;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: var(--surface); border-radius: 14px; width: 100%; max-width: 700px;
+  max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  animation: modalIn .2s ease;
+}
+@keyframes modalIn { from { opacity:0; transform: translateY(12px) scale(.97); } to { opacity:1; transform: none; } }
+.modal-header { padding: 20px 24px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; }
+.modal-title { font-size: 18px; font-weight: 800; flex: 1; }
+.modal-body { padding: 20px 24px; }
+.modal-footer { padding: 16px 24px; border-top: 1px solid var(--border); display: flex; gap: 10px; justify-content: flex-end; }
+
+/* FORM */
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.form-group { display: flex; flex-direction: column; gap: 5px; }
+.form-group.full { grid-column: 1/-1; }
+label { font-size: 11px; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.8px; color: var(--gray-500); font-weight: 500; }
+input, select, textarea {
+  padding: 8px 12px; border: 1px solid var(--gray-200); border-radius: var(--radius-sm);
+  font-family: var(--font-display); font-size: 13px; color: var(--gray-800);
+  background: var(--gray-50); transition: border .15s; outline: none;
+}
+input:focus, select:focus, textarea:focus { border-color: var(--green); background: #fff; box-shadow: 0 0 0 3px rgba(26,122,74,0.1); }
+textarea { resize: vertical; min-height: 80px; }
+.checkbox-group { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+.checkbox-group input[type=checkbox] { width: 16px; height: 16px; accent-color: var(--green); }
+
+/* HISTORY */
+.history-list { display: flex; flex-direction: column; gap: 10px; }
+.history-item { display: flex; gap: 12px; }
+.history-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); margin-top: 5px; flex-shrink: 0; }
+.history-content { flex: 1; background: var(--gray-50); border-radius: 8px; padding: 10px 12px; }
+.history-date { font-size: 10px; font-family: var(--font-mono); color: var(--gray-400); }
+.history-text { font-size: 13px; color: var(--gray-700); margin-top: 2px; }
+.history-canal { font-size: 10px; font-family: var(--font-mono); display: inline-block; padding: 1px 6px; border-radius: 4px; background: var(--green-light); color: var(--green-dark); margin-top: 4px; }
+
+/* SEARCH + FILTER BAR */
+.filter-bar { display: flex; gap: 10px; align-items: center; margin-bottom: 16px; flex-wrap: wrap; }
+.search-input { flex: 1; min-width: 180px; padding: 8px 12px 8px 34px; border: 1px solid var(--gray-200); border-radius: var(--radius-sm); font-size: 13px; font-family: var(--font-display); background: var(--surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E") no-repeat 10px center; outline: none; }
+.search-input:focus { border-color: var(--green); }
+
+/* TABS */
+.tabs { display: flex; gap: 2px; background: var(--gray-100); border-radius: 8px; padding: 3px; margin-bottom: 20px; }
+.tab { flex: 1; padding: 7px 14px; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; text-align: center; color: var(--gray-500); border: none; background: transparent; font-family: var(--font-display); transition: all .15s; }
+.tab.active { background: var(--surface); color: var(--green-dark); box-shadow: var(--shadow); }
+
+/* PAPPERS */
+.pappers-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+.pappers-result { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; cursor: pointer; transition: all .15s; }
+.pappers-result:hover { border-color: var(--green); transform: translateY(-1px); box-shadow: var(--shadow-md); }
+.pappers-result .pr-name { font-size: 14px; font-weight: 700; color: var(--gray-800); }
+.pappers-result .pr-meta { font-size: 11px; font-family: var(--font-mono); color: var(--gray-400); margin-top: 3px; }
+.pappers-result .pr-addr { font-size: 12px; color: var(--gray-600); margin-top: 6px; }
+.pappers-result .pr-naf { font-size: 10px; font-family: var(--font-mono); background: var(--blue-light); color: var(--blue); padding: 2px 7px; border-radius: 4px; margin-top: 6px; display: inline-block; }
+
+/* ALERTS */
+.alert { padding: 10px 14px; border-radius: 8px; font-size: 13px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+.alert-warning { background: var(--amber-light); color: #92400e; border: 1px solid #fde68a; }
+.alert-info { background: var(--blue-light); color: #1e3a8a; border: 1px solid #bfdbfe; }
+.alert-success { background: var(--green-light); color: var(--green-dark); border: 1px solid #bbf7d0; }
+
+/* LOADING */
+.loading { text-align: center; padding: 40px; color: var(--gray-400); font-family: var(--font-mono); font-size: 13px; }
+.spinner { display: inline-block; width: 20px; height: 20px; border: 2px solid var(--gray-200); border-top-color: var(--green); border-radius: 50%; animation: spin .7s linear infinite; margin-right: 8px; vertical-align: middle; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* RELANCE BANNER */
+.relance-banner { background: linear-gradient(135deg, #fff7ed, #fef3c7); border: 1px solid #fed7aa; border-radius: var(--radius); padding: 14px 18px; margin-bottom: 20px; display: flex; align-items: center; gap: 12px; }
+.relance-banner .rb-count { font-size: 28px; font-weight: 800; color: var(--amber); }
+.relance-banner .rb-text { font-size: 13px; color: #92400e; }
+.relance-banner .rb-text strong { display: block; font-size: 15px; }
+
+/* EMPTY STATE */
+.empty-state { text-align: center; padding: 60px 20px; color: var(--gray-400); }
+.empty-state svg { width: 48px; height: 48px; opacity: .3; margin-bottom: 12px; }
+.empty-state p { font-size: 14px; }
+
+/* COURRIER */
+.courrier-box { background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: 8px; padding: 20px; font-size: 13px; line-height: 1.8; white-space: pre-wrap; color: var(--gray-700); font-family: Georgia, serif; }
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  :root { --sidebar-w: 0px; }
+  #sidebar { transform: translateX(-220px); }
+  #sidebar.open { transform: translateX(0); width: 220px; }
+  #main { margin-left: 0; }
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .pipeline-wrap { grid-template-columns: 1fr; overflow-x: auto; display: flex; }
+  .pipeline-col { min-width: 200px; }
+  .pappers-grid { grid-template-columns: 1fr 1fr; }
+  .form-grid { grid-template-columns: 1fr; }
+  .topbar-title span { display: none; }
+}
+@media (max-width: 600px) {
+  #content { padding: 14px; }
+  .stats-grid { grid-template-columns: 1fr 1fr; }
+  .pappers-grid { grid-template-columns: 1fr; }
+}
+
+/* PILLS STATUT */
+.pill { display: inline-flex; align-items: center; gap: 4px; padding: 3px 9px; border-radius: 20px; font-size: 11px; font-weight: 600; font-family: var(--font-mono); }
+.pill-froid { background: var(--gray-100); color: var(--gray-500); }
+.pill-contact { background: var(--blue-light); color: var(--blue); }
+.pill-devis { background: var(--amber-light); color: var(--amber); }
+.pill-client { background: #dcfce7; color: #166534; }
+.pill-inactif { background: var(--gray-100); color: var(--gray-400); }
+
+/* HAMBURGER */
+.hamburger { display: none; cursor: pointer; background: none; border: none; padding: 6px; color: var(--gray-600); }
+.hamburger svg { width: 22px; height: 22px; }
+@media (max-width: 900px) { .hamburger { display: flex; } }
+
+/* COURRIER TEMPLATES */
+.tpl-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 16px; }
+.tpl-card { border: 2px solid var(--border); border-radius: 8px; padding: 12px; cursor: pointer; transition: all .15s; text-align: center; }
+.tpl-card:hover, .tpl-card.selected { border-color: var(--green); background: var(--green-light); }
+.tpl-card .tpl-icon { font-size: 24px; }
+.tpl-card .tpl-name { font-size: 12px; font-weight: 700; margin-top: 4px; color: var(--gray-700); }
+
+/* SECTION TOGGLE */
+.page { display: none; }
+.page.active { display: block; }
+
+/* KANBAN PIPELINE COLORS */
+.col-froid .pipeline-col-title { color: var(--gray-500); }
+.col-contact .pipeline-col-title { color: var(--blue); }
+.col-devis .pipeline-col-title { color: var(--amber); }
+.col-client .pipeline-col-title { color: var(--green); }
+.col-inactif .pipeline-col-title { color: var(--gray-400); }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav id="sidebar">
+  <div class="sidebar-logo">
+    <div class="brand">RESODE</div>
+    <div class="sub">CRM Commercial</div>
+    <div class="badge-entity">v1.0 — CÉDRIC LECOMTE</div>
+  </div>
+  <div class="sidebar-nav">
+    <div class="nav-section">Vue d'ensemble</div>
+    <div class="nav-item active" onclick="showPage('dashboard')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      Tableau de bord
+    </div>
+    <div class="nav-section">Contacts</div>
+    <div class="nav-item" onclick="showPage('pipeline')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12H2M22 12l-4-4M22 12l-4 4"/></svg>
+      Pipeline
+      <span class="nav-badge" id="badge-devis">0</span>
+    </div>
+    <div class="nav-item" onclick="showPage('contacts')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      Tous les contacts
+    </div>
+    <div class="nav-item" onclick="showPage('relances')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+      Relances
+      <span class="nav-badge urgent" id="badge-relances">0</span>
+    </div>
+    <div class="nav-section">Outils</div>
+    <div class="nav-item" onclick="showPage('pappers')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      Prospection Pappers
+    </div>
+    <div class="nav-item" onclick="showPage('courriers')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      Courriers types
+    </div>
+  </div>
+  <div class="sidebar-footer">
+    <div class="sidebar-user">
+      <strong>Cédric Lecomte</strong>
+      RESODE / CSTMD
+    </div>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<div id="main">
+  <div id="topbar">
+    <button class="hamburger" onclick="toggleSidebar()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <div class="topbar-title" id="page-title">Tableau de bord <span id="page-date"></span></div>
+    <div class="topbar-actions">
+      <button class="btn btn-primary btn-sm" onclick="openModal('new')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Nouveau contact
+      </button>
+    </div>
+  </div>
+
+  <div id="content">
+
+    <!-- DASHBOARD -->
+    <div class="page active" id="page-dashboard">
+      <div class="stats-grid" id="stats-grid"></div>
+      <div id="relance-banner-wrap"></div>
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Activité récente</div>
+          <button class="btn btn-secondary btn-sm" onclick="showPage('contacts')">Voir tous →</button>
+        </div>
+        <div class="card-body" style="padding:0;">
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Société</th><th>Statut</th><th>Secteur</th><th>Entité</th><th>Prochain contact</th><th>Mis à jour</th></tr></thead>
+              <tbody id="recent-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PIPELINE -->
+    <div class="page" id="page-pipeline">
+      <div class="pipeline-wrap" id="pipeline-wrap"></div>
+    </div>
+
+    <!-- CONTACTS -->
+    <div class="page" id="page-contacts">
+      <div class="filter-bar">
+        <input class="search-input" type="text" placeholder="Rechercher une société, un contact…" id="search-input" oninput="renderContacts()">
+        <select id="filter-statut" onchange="renderContacts()" style="padding:8px 12px;border:1px solid var(--gray-200);border-radius:6px;font-size:13px;font-family:var(--font-display)">
+          <option value="">Tous les statuts</option>
+          <option value="froid">Prospect froid</option>
+          <option value="contact">Contact pris</option>
+          <option value="devis">Devis envoyé</option>
+          <option value="client">Client</option>
+          <option value="inactif">Inactif</option>
+        </select>
+        <select id="filter-secteur" onchange="renderContacts()" style="padding:8px 12px;border:1px solid var(--gray-200);border-radius:6px;font-size:13px;font-family:var(--font-display)">
+          <option value="">Tous les secteurs</option>
+        </select>
+        <select id="filter-entite" onchange="renderContacts()" style="padding:8px 12px;border:1px solid var(--gray-200);border-radius:6px;font-size:13px;font-family:var(--font-display)">
+          <option value="">RESODE + CSTMD</option>
+          <option value="RESODE">RESODE</option>
+          <option value="CSTMD">CSTMD</option>
+        </select>
+        <label class="checkbox-group"><input type="checkbox" id="filter-relance" onchange="renderContacts()"><span style="font-size:13px">À relancer uniquement</span></label>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title" id="contacts-count-label">Contacts</div>
+          <button class="btn btn-secondary btn-sm" onclick="exportCSV()">⬇ Export CSV</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Société</th><th>Contact</th><th>Téléphone</th><th>Statut</th><th>Secteur</th><th>Entité</th><th>Relance</th><th>Mis à jour</th><th></th></tr></thead>
+            <tbody id="contacts-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- RELANCES -->
+    <div class="page" id="page-relances">
+      <div class="alert alert-warning">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        Les contacts marqués "à relancer" apparaissent ici. Cocher la case relance sur une fiche pour les faire apparaître.
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-title">Contacts à relancer</div></div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Société</th><th>Contact</th><th>Téléphone</th><th>Statut</th><th>Secteur</th><th>Date relance</th><th>Note</th><th></th></tr></thead>
+            <tbody id="relances-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAPPERS -->
+    <div class="page" id="page-pappers">
+      <div class="alert alert-info">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        Outil de prospection connecté à l'API Pappers. Clé API gratuite sur <strong>pappers.fr/api</strong> (100 req/jour). Entrez votre clé ci-dessous.
+      </div>
+      <div class="card" style="margin-bottom:16px;">
+        <div class="card-header"><div class="card-title">🔍 Recherche de prospects</div></div>
+        <div class="card-body">
+          <div class="form-grid" style="margin-bottom:14px;">
+            <div class="form-group">
+              <label>Clé API Pappers</label>
+              <input type="text" id="pappers-key" placeholder="Votre clé API…" oninput="savePappersKey()">
+            </div>
+            <div class="form-group">
+              <label>Département / Code postal</label>
+              <input type="text" id="p-dept" placeholder="ex: 59, 62, Nord…" value="59">
+            </div>
+            <div class="form-group">
+              <label>Code NAF (secteur)</label>
+              <select id="p-naf">
+                <option value="">— Tous —</option>
+                <optgroup label="🏗️ BTP / Construction">
+                  <option value="4120A">4120A — Construction maisons individuelles</option>
+                  <option value="4120B">4120B — Construction autres bâtiments</option>
+                  <option value="4312A">4312A — Travaux terrassement courants</option>
+                  <option value="4322A">4322A — Travaux plomberie</option>
+                  <option value="4399C">4399C — Travaux de couverture</option>
+                  <option value="4391A">4391A — Travaux charpente</option>
+                  <option value="4110A">4110A — Promotion immobilière logements</option>
+                </optgroup>
+                <optgroup label="🏭 Industrie / Fabrication">
+                  <option value="2561Z">2561Z — Traitement/revêtement métaux</option>
+                  <option value="2562B">2562B — Décolletage</option>
+                  <option value="2410Z">2410Z — Sidérurgie</option>
+                  <option value="2550A">2550A — Forge, estampage, matriçage</option>
+                  <option value="3315Z">3315Z — Réparation navale</option>
+                  <option value="2920Z">2920Z — Fabrication carrosseries</option>
+                  <option value="2219Z">2219Z — Fabrication autres articles caoutchouc</option>
+                  <option value="2312Z">2312Z — Façonnage/transformation verre plat</option>
+                </optgroup>
+                <optgroup label="♻️ Déchets / Environnement">
+                  <option value="3811Z">3811Z — Collecte déchets non dangereux</option>
+                  <option value="3812Z">3812Z — Collecte déchets dangereux</option>
+                  <option value="3821Z">3821Z — Traitement déchets non dangereux</option>
+                  <option value="3822Z">3822Z — Traitement déchets dangereux</option>
+                </optgroup>
+                <optgroup label="🔧 Maintenance / Services ind.">
+                  <option value="3314Z">3314Z — Réparation équipements électriques</option>
+                  <option value="3320A">3320A — Installation équipements industriels</option>
+                  <option value="8122Z">8122Z — Nettoyage industriel</option>
+                  <option value="4321A">4321A — Travaux d'installation électrique</option>
+                </optgroup>
+                <optgroup label="🚢 Naval / Portuaire">
+                  <option value="5222Z">5222Z — Services auxiliaires des transports par eau</option>
+                  <option value="5020Z">5020Z — Transports maritimes côtiers passagers</option>
+                </optgroup>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Effectif (tranche)</label>
+              <select id="p-effectif">
+                <option value="">— Tous —</option>
+                <option value="1">0 salarié</option>
+                <option value="2">1-2 salariés</option>
+                <option value="3">3-5 salariés</option>
+                <option value="11">6-9 salariés</option>
+                <option value="12">10-19 salariés</option>
+                <option value="21">20-49 salariés</option>
+                <option value="22">50-99 salariés</option>
+                <option value="31">100-199 salariés</option>
+                <option value="32">200-499 salariés</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Mot-clé (nom société)</label>
+              <input type="text" id="p-keyword" placeholder="ex: menuiserie, industrie…">
+            </div>
+            <div class="form-group">
+              <label>Nb résultats</label>
+              <select id="p-nb">
+                <option value="10">10</option>
+                <option value="20" selected>20</option>
+                <option value="50">50</option>
+              </select>
+            </div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+            <button class="btn btn-primary" onclick="searchPappers()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+              Rechercher
+            </button>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;" id="naf-presets">
+              <button class="btn btn-secondary btn-sm" onclick="setNaf('4312A')">Terrassement 59</button>
+              <button class="btn btn-secondary btn-sm" onclick="setNaf('2561Z')">Traitement métaux</button>
+              <button class="btn btn-secondary btn-sm" onclick="setNaf('8122Z')">Nettoyage indus.</button>
+              <button class="btn btn-secondary btn-sm" onclick="setNaf('3812Z')">Déchets dangereux</button>
+              <button class="btn btn-secondary btn-sm" onclick="setNaf('3315Z')">Réparation navale</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="pappers-results"></div>
+    </div>
+
+    <!-- COURRIERS -->
+    <div class="page" id="page-courriers">
+      <div class="card">
+        <div class="card-header"><div class="card-title">Générateur de courriers / emails</div></div>
+        <div class="card-body">
+          <div class="form-grid" style="margin-bottom:16px;">
+            <div class="form-group">
+              <label>Contact destinataire</label>
+              <select id="courrier-contact">
+                <option value="">— Choisir un contact —</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Type de courrier</label>
+              <select id="courrier-type">
+                <option value="">— Choisir un modèle —</option>
+                <option value="prise_contact">📞 Prise de contact initiale</option>
+                <option value="relance">🔔 Relance (sans réponse)</option>
+                <option value="devis">📋 Envoi de devis</option>
+                <option value="suivi_devis">✅ Suivi après devis</option>
+                <option value="merci_client">🤝 Remerciement nouveau client</option>
+                <option value="amiante">⚠️ Proposition service amiante/BSDA</option>
+              </select>
+            </div>
+          </div>
+          <button class="btn btn-primary" onclick="genCourrier()">Générer le courrier</button>
+          <div id="courrier-output" style="margin-top:16px;"></div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+
+<!-- MODAL CONTACT -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModalOutside(event)">
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modal-title">Nouveau contact</div>
+      <button class="btn-icon" onclick="closeModal()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
+<script>
+// ========== DATA ==========
+const STATUTS = ['froid','contact','devis','client','inactif'];
+const STATUT_LABELS = { froid:'Prospect froid', contact:'Contact pris', devis:'Devis envoyé', client:'Client', inactif:'Inactif' };
+const STATUT_COLORS = { froid:'gray', contact:'blue', devis:'amber', client:'green', inactif:'gray' };
+const CANAUX = ['Téléphone','Email','WhatsApp','Visite'];
+
+const SECTEURS_PRESETS = [
+  'BTP / Construction','Industrie manufacturière','Traitement de surfaces','Naval / Portuaire',
+  'Nettoyage industriel','Maintenance / Services','Déchets / Environnement','Amiante / Désamiantage',
+  'Chimie / Pharmacie','Agroalimentaire','Transport / Logistique','Autre'
+];
+
+// Initial prospects from filière TS HDF
+const INITIAL_CONTACTS = [
+  { id:1, societe:'AEROFILTER', contact:'', tel:'', email:'', statut:'froid', secteur:'Traitement de surfaces', entite:'RESODE', siren:'890300106', adresse:'81 rue de Bonnance, 59242 Templeuve-en-Pévèle', relance:false, date_relance:'', note:'Prospection filière TS HDF. Matériaux filtration.', historique:[], created: dateNow(), updated: dateNow() },
+  { id:2, societe:'aLiSa.D', contact:'Maxime Blondeau', tel:'06 68 82 72 64', email:'blondeau@alisa-depollution.com', statut:'froid', secteur:'Amiante / Désamiantage', entite:'CSTMD', siren:'509493359', adresse:'ZAC Parc Activités Bonnel, 331 rue du Galibot, 59167 Lallaing', relance:false, date_relance:'', note:'Spécialiste retrait amiante, démantèlement industriel, dépollution sols. Zone HDF.', historique:[], created: dateNow(), updated: dateNow() },
+  { id:3, societe:'APPLISURFACES', contact:'Jacques Pourcher', tel:'03 21 54 10 77', email:'commercial@applisurfaces.fr', statut:'froid', secteur:'Traitement de surfaces', entite:'RESODE', siren:'409572880', adresse:'Parc d\'Entreprises Les Portes d\'Artois-Plantin, 62190 Lillers', relance:false, date_relance:'', note:'Filiale Sofiplast. Traitement de surface industriel. 62.', historique:[], created: dateNow(), updated: dateNow() },
+  { id:4, societe:'BESA FRANCE', contact:'', tel:'', email:'info@besafrance.fr', statut:'froid', secteur:'Traitement de surfaces', entite:'RESODE', siren:'334818176', adresse:'24 Carrière Dorée, 59310 Orchies', relance:false, date_relance:'', note:'Commerce peintures industrielles. Filiale BESA Espagne. Orchies.', historique:[], created: dateNow(), updated: dateNow() },
+  { id:5, societe:'CAELI Air Comprimé', contact:'Adrien Dumas', tel:'03 27 24 92 80', email:'infos@caeli-france.com', statut:'froid', secteur:'Maintenance / Services', entite:'RESODE', siren:'842400939', adresse:'Technopôle Transalley, 89 rue George Stephenson, 59300 Famars', relance:false, date_relance:'', note:'Air comprimé, azote, vide industriel. +300 clients HDF.', historique:[], created: dateNow(), updated: dateNow() },
+  { id:6, societe:'CNC Distribution', contact:'Yannick Gille', tel:'03 28 38 11 80', email:'', statut:'froid', secteur:'BTP / Construction', entite:'RESODE', siren:'402216097', adresse:'27 rue de Messines, 59237 Verlinghem', relance:false, date_relance:'', note:'Négoce matériaux BTP. Gérant Yannick Gille.', historique:[], created: dateNow(), updated: dateNow() },
+  { id:7, societe:'DAMEN SHIPREPAIR DUNKERQUE', contact:'Arnaud Chotard', tel:'03 28 66 42 62', email:'', statut:'froid', secteur:'Naval / Portuaire', entite:'CSTMD', siren:'340061654', adresse:'Route des Docks Flottants, 59140 Dunkerque', relance:false, date_relance:'', note:'Réparation navale. 140 collaborateurs. Dunkerque. Président Arnaud Chotard depuis jan 2025.', historique:[], created: dateNow(), updated: dateNow() },
+  { id:8, societe:'DB INDUSTRIE', contact:'Benoist Deconinck', tel:'', email:'', statut:'froid', secteur:'Maintenance / Services', entite:'RESODE', siren:'485119531', adresse:'2b chemin du Ketelbout Straete, 59630 Bourbourg', relance:false, date_relance:'', note:'Commerce gros machines équipements. Zone Dunkerque.', historique:[], created: dateNow(), updated: dateNow() },
+  { id:9, societe:'HEXAGONE FORMATION', contact:'Magalie Hainaut', tel:'', email:'', statut:'froid', secteur:'Autre', entite:'RESODE', siren:'', adresse:'Hauts-de-France', relance:false, date_relance:'', note:'Formation industrielle. Partenaire filière TS HDF.', historique:[], created: dateNow(), updated: dateNow() },
+  { id:10, societe:'JL CORP', contact:'', tel:'', email:'', statut:'froid', secteur:'Traitement de surfaces', entite:'RESODE', siren:'', adresse:'Hauts-de-France', relance:false, date_relance:'', note:'Membre filière TS HDF.', historique:[], created: dateNow(), updated: dateNow() },
+  { id:11, societe:'MAESTRIA Peintures', contact:'Franck Muteau', tel:'', email:'', statut:'froid', secteur:'Traitement de surfaces', entite:'RESODE', siren:'', adresse:'Hauts-de-France', relance:false, date_relance:'', note:'Fabricant peintures. 3e génération. Présent lancement filière 2022.', historique:[], created: dateNow(), updated: dateNow() },
+  { id:12, societe:'NORDECAPAGE', contact:'', tel:'', email:'', statut:'froid', secteur:'Traitement de surfaces', entite:'RESODE', siren:'', adresse:'Hauts-de-France', relance:false, date_relance:'', note:'Décapage industriel. Membre filière TS HDF.', historique:[], created: dateNow(), updated: dateNow() },
+  { id:13, societe:'PEINTOU', contact:'', tel:'', email:'', statut:'froid', secteur:'Traitement de surfaces', entite:'RESODE', siren:'', adresse:'Hauts-de-France', relance:false, date_relance:'', note:'Peinture industrielle. Filière TS HDF.', historique:[], created: dateNow(), updated: dateNow() },
+  { id:14, societe:'PRO.MA.TEC', contact:'', tel:'', email:'', statut:'froid', secteur:'Traitement de surfaces', entite:'RESODE', siren:'', adresse:'Hauts-de-France', relance:false, date_relance:'', note:'Matériel sablage et peinture.', historique:[], created: dateNow(), updated: dateNow() },
+  { id:15, societe:'PRO IMPEC', contact:'', tel:'', email:'', statut:'froid', secteur:'Nettoyage industriel', entite:'RESODE', siren:'', adresse:'Hauts-de-France', relance:false, date_relance:'', note:'Nettoyage industriel. Groupe Pascal Boulanger.', historique:[], created: dateNow(), updated: dateNow() },
+  { id:16, societe:'PROMETA P.R.', contact:'', tel:'', email:'', statut:'froid', secteur:'Traitement de surfaces', entite:'RESODE', siren:'', adresse:'Hauts-de-France', relance:false, date_relance:'', note:'Préparations et revêtements.', historique:[], created: dateNow(), updated: dateNow() },
+  { id:17, societe:'PROTEXY', contact:'', tel:'', email:'', statut:'froid', secteur:'Traitement de surfaces', entite:'RESODE', siren:'', adresse:'Hauts-de-France', relance:false, date_relance:'', note:'Membre filière TS HDF.', historique:[], created: dateNow(), updated: dateNow() },
+  { id:18, societe:'REMNI', contact:'', tel:'', email:'', statut:'froid', secteur:'Traitement de surfaces', entite:'RESODE', siren:'', adresse:'Hauts-de-France', relance:false, date_relance:'', note:'Membre filière TS HDF.', historique:[], created: dateNow(), updated: dateNow() },
+  { id:19, societe:'SABLEGOM', contact:'', tel:'', email:'', statut:'froid', secteur:'Traitement de surfaces', entite:'RESODE', siren:'', adresse:'Hauts-de-France', relance:false, date_relance:'', note:'Sablage. Membre filière TS HDF.', historique:[], created: dateNow(), updated: dateNow() },
+  { id:20, societe:'SMPI', contact:'', tel:'', email:'', statut:'froid', secteur:'Traitement de surfaces', entite:'RESODE', siren:'', adresse:'Hauts-de-France', relance:false, date_relance:'', note:'Sablage, Métallisation, Thermolaquage. Présenté lors lancement filière.', historique:[], created: dateNow(), updated: dateNow() },
+  { id:21, societe:'STAD-REVEL', contact:'', tel:'', email:'', statut:'froid', secteur:'Traitement de surfaces', entite:'RESODE', siren:'', adresse:'Hauts-de-France', relance:false, date_relance:'', note:'Membre filière TS HDF.', historique:[], created: dateNow(), updated: dateNow() },
+  { id:22, societe:'ZINGA', contact:'', tel:'', email:'', statut:'froid', secteur:'Traitement de surfaces', entite:'RESODE', siren:'', adresse:'Hauts-de-France', relance:false, date_relance:'', note:'Marque belge anti-corrosion. Présente filière TS HDF.', historique:[], created: dateNow(), updated: dateNow() },
+  { id:23, societe:'ZINQ', contact:'', tel:'', email:'', statut:'froid', secteur:'Traitement de surfaces', entite:'RESODE', siren:'', adresse:'Hauts-de-France', relance:false, date_relance:'', note:'Galvanisation. Membre filière TS HDF.', historique:[], created: dateNow(), updated: dateNow() },
+  { id:24, societe:'OPTERM', contact:'', tel:'', email:'', statut:'froid', secteur:'Maintenance / Services', entite:'RESODE', siren:'', adresse:'Hauts-de-France', relance:false, date_relance:'', note:'Expert thermique nouvelle industrie. Filière TS HDF.', historique:[], created: dateNow(), updated: dateNow() },
+  { id:25, societe:'CAÏD CONCEPT', contact:'', tel:'', email:'', statut:'froid', secteur:'Traitement de surfaces', entite:'RESODE', siren:'', adresse:'Hauts-de-France', relance:false, date_relance:'', note:'Membre filière TS HDF.', historique:[], created: dateNow(), updated: dateNow() },
+  { id:26, societe:'COATEQ', contact:'', tel:'', email:'', statut:'froid', secteur:'Traitement de surfaces', entite:'RESODE', siren:'', adresse:'Hauts-de-France', relance:false, date_relance:'', note:'Membre filière TS HDF.', historique:[], created: dateNow(), updated: dateNow() },
+  { id:27, societe:'DelTech', contact:'Steen Delcourt', tel:'', email:'', statut:'froid', secteur:'Traitement de surfaces', entite:'CSTMD', siren:'', adresse:'Dunkerque', relance:false, date_relance:'', note:'Partenaire filière TS HDF. Zone Dunkerque.', historique:[], created: dateNow(), updated: dateNow() },
+  { id:28, societe:'PROD-UP', contact:'Ludovic Isaert', tel:'', email:'', statut:'froid', secteur:'Maintenance / Services', entite:'RESODE', siren:'', adresse:'Hauts-de-France', relance:false, date_relance:'', note:'ERP construction/maintenance/services. Membre filière TS HDF.', historique:[], created: dateNow(), updated: dateNow() },
+];
+
+function dateNow() { return new Date().toISOString().split('T')[0]; }
+function nextId(arr) { return arr.length ? Math.max(...arr.map(x=>x.id))+1 : 1; }
+
+// ========== STORAGE ==========
+function loadData() {
+  try {
+    const d = localStorage.getItem('resode_crm_v1');
+    if (d) return JSON.parse(d);
+  } catch(e) {}
+  return { contacts: JSON.parse(JSON.stringify(INITIAL_CONTACTS)), pappers_key: '' };
+}
+function saveData() { localStorage.setItem('resode_crm_v1', JSON.stringify(DB)); }
+function savePappersKey() {
+  DB.pappers_key = document.getElementById('pappers-key').value;
+  saveData();
+}
+
+let DB = loadData();
+
+// ========== NAVIGATION ==========
+let currentPage = 'dashboard';
+function showPage(p) {
+  currentPage = p;
+  document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+  document.getElementById('page-'+p).classList.add('active');
+  const navMap = { dashboard:0, pipeline:1, contacts:2, relances:3, pappers:4, courriers:5 };
+  const items = document.querySelectorAll('.nav-item');
+  if (navMap[p] !== undefined) items[navMap[p]].classList.add('active');
+  const titles = { dashboard:'Tableau de bord', pipeline:'Pipeline commercial', contacts:'Tous les contacts', relances:'Relances', pappers:'Prospection Pappers', courriers:'Courriers types' };
+  document.getElementById('page-title').innerHTML = titles[p] + ' <span id="page-date"></span>';
+  updateDate();
+  if (p === 'dashboard') renderDashboard();
+  if (p === 'pipeline') renderPipeline();
+  if (p === 'contacts') renderContacts();
+  if (p === 'relances') renderRelances();
+  if (p === 'pappers') {
+    const k = document.getElementById('pappers-key');
+    if (k) k.value = DB.pappers_key || '';
+  }
+  if (p === 'courriers') renderCourrierContacts();
+  updateBadges();
+  if (window.innerWidth < 900) document.getElementById('sidebar').classList.remove('open');
+}
+
+function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); }
+function updateDate() {
+  const el = document.getElementById('page-date');
+  if (el) el.textContent = new Date().toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+}
+
+// ========== BADGES ==========
+function updateBadges() {
+  const devis = DB.contacts.filter(c=>c.statut==='devis').length;
+  const relances = DB.contacts.filter(c=>c.relance).length;
+  document.getElementById('badge-devis').textContent = devis;
+  document.getElementById('badge-relances').textContent = relances;
+  document.getElementById('badge-relances').className = 'nav-badge' + (relances > 0 ? ' urgent' : '');
+}
+
+// ========== DASHBOARD ==========
+function renderDashboard() {
+  const c = DB.contacts;
+  const stats = [
+    { label:'Total contacts', value: c.length, sub:'dans la base', accent:'var(--green)' },
+    { label:'Prospects froids', value: c.filter(x=>x.statut==='froid').length, sub:'à contacter', accent:'var(--gray-300)' },
+    { label:'En cours', value: c.filter(x=>x.statut==='contact').length, sub:'contact pris', accent:'var(--blue)' },
+    { label:'Devis envoyés', value: c.filter(x=>x.statut==='devis').length, sub:'en attente réponse', accent:'var(--amber)' },
+    { label:'Clients', value: c.filter(x=>x.statut==='client').length, sub:'actifs', accent:'var(--green-mid)' },
+  ];
+  document.getElementById('stats-grid').innerHTML = stats.map(s => `
+    <div class="stat-card" style="--accent:${s.accent}">
+      <div class="stat-label">${s.label}</div>
+      <div class="stat-value">${s.value}</div>
+      <div class="stat-sub">${s.sub}</div>
+    </div>`).join('');
+
+  const relancesToday = c.filter(x => x.relance);
+  const rw = document.getElementById('relance-banner-wrap');
+  rw.innerHTML = relancesToday.length ? `
+    <div class="relance-banner">
+      <div class="rb-count">${relancesToday.length}</div>
+      <div class="rb-text">
+        <strong>Contact${relancesToday.length>1?'s':''} à relancer</strong>
+        ${relancesToday.slice(0,3).map(x=>x.societe).join(', ')}${relancesToday.length>3?'…':''}
+      </div>
+      <button class="btn btn-secondary btn-sm" style="margin-left:auto" onclick="showPage('relances')">Voir →</button>
+    </div>` : '';
+
+  const recent = [...c].sort((a,b)=>b.updated.localeCompare(a.updated)).slice(0,10);
+  document.getElementById('recent-tbody').innerHTML = recent.map(ct => `
+    <tr onclick="openModal('edit',${ct.id})">
+      <td><strong>${ct.societe}</strong></td>
+      <td>${pillHtml(ct.statut)}</td>
+      <td><span class="tag tag-sector">${ct.secteur}</span></td>
+      <td><span class="tag ${ct.entite==='RESODE'?'tag-resode':'tag-cstmd'}">${ct.entite}</span></td>
+      <td style="font-family:var(--font-mono);font-size:11px;color:var(--gray-400)">${ct.relance?'<span style="color:var(--amber)">⚠ À relancer</span>':ct.date_relance||'—'}</td>
+      <td style="font-family:var(--font-mono);font-size:11px;color:var(--gray-400)">${ct.updated}</td>
+    </tr>`).join('');
+}
+
+function pillHtml(statut) {
+  const l = STATUT_LABELS[statut]||statut;
+  return `<span class="pill pill-${statut}"><span class="status-dot" style="background:currentColor;width:6px;height:6px;border-radius:50%;display:inline-block;margin-right:2px"></span>${l}</span>`;
+}
+
+// ========== PIPELINE ==========
+function renderPipeline() {
+  const cols = [
+    { key:'froid', label:'Prospect froid' },
+    { key:'contact', label:'Contact pris' },
+    { key:'devis', label:'Devis envoyé' },
+    { key:'client', label:'Client' },
+    { key:'inactif', label:'Inactif' },
+  ];
+  const html = cols.map(col => {
+    const cards = DB.contacts.filter(c=>c.statut===col.key);
+    return `<div class="pipeline-col col-${col.key}">
+      <div class="pipeline-col-header">
+        <span class="pipeline-col-title">${col.label}</span>
+        <span class="pipeline-count">${cards.length}</span>
+      </div>
+      <div class="pipeline-col-body">
+        ${cards.length === 0 ? `<div style="color:var(--gray-300);font-size:12px;text-align:center;padding:20px 0;font-family:var(--font-mono)">vide</div>` : ''}
+        ${cards.map(c => `
+          <div class="pipeline-card ${c.relance?'relance':''}" onclick="openModal('edit',${c.id})">
+            <div class="pc-name">${c.societe}</div>
+            <div class="pc-sector">${c.secteur}</div>
+            <div class="pc-meta">
+              <span class="tag ${c.entite==='RESODE'?'tag-resode':'tag-cstmd'}">${c.entite}</span>
+              ${c.relance?'<span class="tag tag-relance">⚠ Relance</span>':''}
+            </div>
+            ${c.contact?`<div class="pc-date">${c.contact}</div>`:''}
+          </div>`).join('')}
+      </div>
+    </div>`;
+  }).join('');
+  document.getElementById('pipeline-wrap').innerHTML = html;
+}
+
+// ========== CONTACTS TABLE ==========
+function renderContacts() {
+  const q = (document.getElementById('search-input')||{}).value?.toLowerCase()||'';
+  const fs = (document.getElementById('filter-statut')||{}).value||'';
+  const fse = (document.getElementById('filter-secteur')||{}).value||'';
+  const fe = (document.getElementById('filter-entite')||{}).value||'';
+  const fr = (document.getElementById('filter-relance')||{}).checked||false;
+
+  let list = DB.contacts.filter(c => {
+    if (q && !c.societe.toLowerCase().includes(q) && !c.contact.toLowerCase().includes(q) && !c.note.toLowerCase().includes(q)) return false;
+    if (fs && c.statut !== fs) return false;
+    if (fse && c.secteur !== fse) return false;
+    if (fe && c.entite !== fe) return false;
+    if (fr && !c.relance) return false;
+    return true;
+  });
+
+  // Populate secteur filter
+  const sels = document.getElementById('filter-secteur');
+  if (sels && sels.options.length <= 1) {
+    const sects = [...new Set(DB.contacts.map(c=>c.secteur))].sort();
+    sects.forEach(s => { const o=document.createElement('option'); o.value=s; o.textContent=s; sels.appendChild(o); });
+  }
+
+  document.getElementById('contacts-count-label').textContent = `${list.length} contact${list.length>1?'s':''} trouvé${list.length>1?'s':''}`;
+
+  document.getElementById('contacts-tbody').innerHTML = list.map(c => `
+    <tr onclick="openModal('edit',${c.id})">
+      <td><strong>${c.societe}</strong>${c.siren?`<br><span style="font-size:10px;font-family:var(--font-mono);color:var(--gray-400)">${c.siren}</span>`:''}</td>
+      <td>${c.contact||'<span style="color:var(--gray-300)">—</span>'}</td>
+      <td>${c.tel?`<a href="tel:${c.tel}" onclick="event.stopPropagation()" style="color:var(--green);font-family:var(--font-mono);font-size:12px">${c.tel}</a>`:'<span style="color:var(--gray-300)">—</span>'}</td>
+      <td>${pillHtml(c.statut)}</td>
+      <td><span class="tag tag-sector">${c.secteur}</span></td>
+      <td><span class="tag ${c.entite==='RESODE'?'tag-resode':'tag-cstmd'}">${c.entite}</span></td>
+      <td>${c.relance?'<span style="color:var(--amber);font-family:var(--font-mono);font-size:11px">⚠ OUI</span>':'<span style="color:var(--gray-300)">—</span>'}</td>
+      <td style="font-family:var(--font-mono);font-size:11px;color:var(--gray-400)">${c.updated}</td>
+      <td><button class="btn-icon" onclick="event.stopPropagation();deleteContact(${c.id})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg></button></td>
+    </tr>`).join('') || '<tr><td colspan="9" style="text-align:center;padding:40px;color:var(--gray-300);font-family:var(--font-mono)">Aucun contact trouvé</td></tr>';
+}
+
+// ========== RELANCES ==========
+function renderRelances() {
+  const list = DB.contacts.filter(c=>c.relance);
+  document.getElementById('relances-tbody').innerHTML = list.map(c => `
+    <tr onclick="openModal('edit',${c.id})">
+      <td><strong>${c.societe}</strong></td>
+      <td>${c.contact||'—'}</td>
+      <td>${c.tel?`<a href="tel:${c.tel}" onclick="event.stopPropagation()" style="color:var(--green);font-family:var(--font-mono);font-size:12px">${c.tel}</a>`:'—'}</td>
+      <td>${pillHtml(c.statut)}</td>
+      <td><span class="tag tag-sector">${c.secteur}</span></td>
+      <td style="font-family:var(--font-mono);font-size:12px;color:var(--amber)">${c.date_relance||'—'}</td>
+      <td style="max-width:200px;font-size:12px;color:var(--gray-600)">${(c.note||'').substring(0,80)}${c.note&&c.note.length>80?'…':''}</td>
+      <td><button class="btn btn-sm btn-secondary" onclick="event.stopPropagation();quickRelanceDone(${c.id})">✓ Fait</button></td>
+    </tr>`).join('') || '<tr><td colspan="8"><div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg><p>Aucune relance en attente</p></div></td></tr>';
+}
+
+function quickRelanceDone(id) {
+  const c = DB.contacts.find(x=>x.id===id);
+  if (!c) return;
+  c.relance = false;
+  c.date_relance = '';
+  c.updated = dateNow();
+  c.historique.push({ date: dateNow(), canal: 'Système', texte: 'Relance marquée comme effectuée.' });
+  saveData(); renderRelances(); updateBadges();
+}
+
+// ========== MODAL CONTACT ==========
+let editId = null;
+function openModal(mode, id) {
+  editId = mode === 'edit' ? id : null;
+  const c = mode === 'edit' ? DB.contacts.find(x=>x.id===id) : null;
+  document.getElementById('modal-title').textContent = mode === 'edit' ? (c?.societe||'Contact') : 'Nouveau contact';
+  document.getElementById('modal-body').innerHTML = buildModalForm(c);
+  document.getElementById('modal-overlay').classList.add('open');
+  // Set values if editing
+  if (c) {
+    document.getElementById('f-statut').value = c.statut;
+    document.getElementById('f-entite').value = c.entite;
+    document.getElementById('f-secteur').value = c.secteur;
+    renderHistorique(c);
+  }
+}
+function closeModal() { document.getElementById('modal-overlay').classList.remove('open'); editId=null; }
+function closeModalOutside(e) { if (e.target===document.getElementById('modal-overlay')) closeModal(); }
+
+function buildModalForm(c) {
+  const v = (field, def='') => c ? (c[field]??def) : def;
+  return `
+  <div class="tabs" style="margin-bottom:16px;">
+    <button class="tab active" id="tab-infos" onclick="switchTab('infos')">Informations</button>
+    <button class="tab" id="tab-historique" onclick="switchTab('historique')">Historique (${c&&c.historique?c.historique.length:0})</button>
+    <button class="tab" id="tab-action" onclick="switchTab('action')">Ajouter échange</button>
+  </div>
+  <div id="tab-content-infos">
+    <div class="form-grid">
+      <div class="form-group"><label>Société *</label><input id="f-societe" value="${v('societe')}" placeholder="Nom de la société"></div>
+      <div class="form-group"><label>SIREN</label><input id="f-siren" value="${v('siren')}" placeholder="ex: 123456789" style="font-family:var(--font-mono)"></div>
+      <div class="form-group"><label>Contact (interlocuteur)</label><input id="f-contact" value="${v('contact')}" placeholder="Prénom Nom"></div>
+      <div class="form-group"><label>Téléphone</label><input id="f-tel" value="${v('tel')}" placeholder="06…" type="tel"></div>
+      <div class="form-group"><label>Email</label><input id="f-email" value="${v('email')}" placeholder="…@…" type="email"></div>
+      <div class="form-group"><label>Statut pipeline</label>
+        <select id="f-statut">
+          ${STATUTS.map(s=>`<option value="${s}">${STATUT_LABELS[s]}</option>`).join('')}
+        </select>
+      </div>
+      <div class="form-group"><label>Entité</label>
+        <select id="f-entite">
+          <option value="RESODE">RESODE</option>
+          <option value="CSTMD">CSTMD</option>
+          <option value="RESODE+CSTMD">RESODE + CSTMD</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Secteur d'activité</label>
+        <select id="f-secteur">
+          ${SECTEURS_PRESETS.map(s=>`<option value="${s}">${s}</option>`).join('')}
+        </select>
+      </div>
+      <div class="form-group full"><label>Adresse</label><input id="f-adresse" value="${v('adresse')}" placeholder="Rue, CP Ville"></div>
+      <div class="form-group full"><label>Note / Contexte</label><textarea id="f-note">${v('note')}</textarea></div>
+      <div class="form-group full">
+        <label class="checkbox-group"><input type="checkbox" id="f-relance" ${v('relance')?'checked':''}><span>🔔 À relancer</span></label>
+      </div>
+      <div class="form-group"><label>Date prochaine relance</label><input id="f-date-relance" type="date" value="${v('date_relance')}"></div>
+    </div>
+  </div>
+  <div id="tab-content-historique" style="display:none">
+    <div id="historique-list" class="history-list"></div>
+  </div>
+  <div id="tab-content-action" style="display:none">
+    <div class="form-grid">
+      <div class="form-group"><label>Canal</label>
+        <select id="a-canal">
+          ${CANAUX.map(can=>`<option>${can}</option>`).join('')}
+        </select>
+      </div>
+      <div class="form-group"><label>Date</label><input id="a-date" type="date" value="${dateNow()}"></div>
+      <div class="form-group full"><label>Description de l'échange</label><textarea id="a-texte" placeholder="Ex: Appel avec M. Dupont, intéressé par collecte bennes, devis à envoyer avant le 15…"></textarea></div>
+    </div>
+    <button class="btn btn-primary" onclick="addHistorique()">Enregistrer cet échange</button>
+  </div>
+  <div class="modal-footer" style="padding:0;border:0;margin-top:16px;justify-content:flex-start;gap:10px;">
+    <button class="btn btn-primary" onclick="saveContact()">💾 Enregistrer</button>
+    ${c?`<button class="btn btn-danger" onclick="deleteContact(${c.id})">Supprimer</button>`:''}
+    <button class="btn btn-secondary" onclick="closeModal()">Annuler</button>
+    ${c&&c.tel?`<a href="tel:${c.tel}" class="btn btn-secondary" style="text-decoration:none">📞 Appeler</a>`:''}
+    ${c&&c.tel?`<a href="https://wa.me/33${c.tel.replace(/^0/,'').replace(/\s/g,'')}" target="_blank" class="btn btn-secondary" style="text-decoration:none">💬 WhatsApp</a>`:''}
+    ${c&&c.email?`<a href="mailto:${c.email}?subject=RESODE - Collecte et valorisation déchets" class="btn btn-secondary" style="text-decoration:none">✉ Email</a>`:''}
+  </div>`;
+}
+
+function switchTab(t) {
+  ['infos','historique','action'].forEach(tab => {
+    document.getElementById('tab-content-'+tab).style.display = tab===t?'block':'none';
+    document.getElementById('tab-'+tab).classList.toggle('active', tab===t);
+  });
+}
+
+function renderHistorique(c) {
+  const el = document.getElementById('historique-list');
+  if (!el || !c) return;
+  if (!c.historique || c.historique.length===0) { el.innerHTML = '<div style="color:var(--gray-300);font-size:13px;text-align:center;padding:20px">Aucun échange enregistré</div>'; return; }
+  el.innerHTML = [...c.historique].reverse().map(h => `
+    <div class="history-item">
+      <div class="history-dot"></div>
+      <div class="history-content">
+        <div class="history-date">${h.date}</div>
+        <div class="history-text">${h.texte}</div>
+        <span class="history-canal">${h.canal}</span>
+      </div>
+    </div>`).join('');
+}
+
+function addHistorique() {
+  if (!editId) return;
+  const c = DB.contacts.find(x=>x.id===editId);
+  if (!c) return;
+  const texte = document.getElementById('a-texte').value.trim();
+  if (!texte) return alert('Entrez une description de l\'échange.');
+  c.historique.push({ date: document.getElementById('a-date').value||dateNow(), canal: document.getElementById('a-canal').value, texte });
+  c.updated = dateNow();
+  saveData();
+  renderHistorique(c);
+  document.getElementById('a-texte').value = '';
+  switchTab('historique');
+  document.getElementById('tab-historique').textContent = `Historique (${c.historique.length})`;
+}
+
+function saveContact() {
+  const societe = document.getElementById('f-societe').value.trim();
+  if (!societe) return alert('Le nom de la société est obligatoire.');
+  if (editId) {
+    const c = DB.contacts.find(x=>x.id===editId);
+    c.societe = societe;
+    c.siren = document.getElementById('f-siren').value.trim();
+    c.contact = document.getElementById('f-contact').value.trim();
+    c.tel = document.getElementById('f-tel').value.trim();
+    c.email = document.getElementById('f-email').value.trim();
+    c.statut = document.getElementById('f-statut').value;
+    c.entite = document.getElementById('f-entite').value;
+    c.secteur = document.getElementById('f-secteur').value;
+    c.adresse = document.getElementById('f-adresse').value.trim();
+    c.note = document.getElementById('f-note').value.trim();
+    c.relance = document.getElementById('f-relance').checked;
+    c.date_relance = document.getElementById('f-date-relance').value;
+    c.updated = dateNow();
+  } else {
+    DB.contacts.push({
+      id: nextId(DB.contacts),
+      societe,
+      siren: document.getElementById('f-siren').value.trim(),
+      contact: document.getElementById('f-contact').value.trim(),
+      tel: document.getElementById('f-tel').value.trim(),
+      email: document.getElementById('f-email').value.trim(),
+      statut: document.getElementById('f-statut').value,
+      entite: document.getElementById('f-entite').value,
+      secteur: document.getElementById('f-secteur').value,
+      adresse: document.getElementById('f-adresse').value.trim(),
+      note: document.getElementById('f-note').value.trim(),
+      relance: document.getElementById('f-relance').checked,
+      date_relance: document.getElementById('f-date-relance').value,
+      historique: [],
+      created: dateNow(), updated: dateNow()
+    });
+  }
+  saveData(); closeModal(); updateBadges();
+  if (currentPage==='dashboard') renderDashboard();
+  if (currentPage==='pipeline') renderPipeline();
+  if (currentPage==='contacts') renderContacts();
+  if (currentPage==='relances') renderRelances();
+}
+
+function deleteContact(id) {
+  if (!confirm('Supprimer ce contact ?')) return;
+  DB.contacts = DB.contacts.filter(c=>c.id!==id);
+  saveData(); closeModal(); updateBadges();
+  if (currentPage==='dashboard') renderDashboard();
+  if (currentPage==='pipeline') renderPipeline();
+  if (currentPage==='contacts') renderContacts();
+  if (currentPage==='relances') renderRelances();
+}
+
+// ========== PAPPERS ==========
+function setNaf(code) {
+  document.getElementById('p-naf').value = code;
+}
+
+async function searchPappers() {
+  const key = document.getElementById('pappers-key').value.trim();
+  if (!key) { document.getElementById('pappers-results').innerHTML = '<div class="alert alert-warning">⚠ Entrez votre clé API Pappers pour lancer une recherche.</div>'; return; }
+  const dept = document.getElementById('p-dept').value.trim();
+  const naf = document.getElementById('p-naf').value;
+  const effectif = document.getElementById('p-effectif').value;
+  const keyword = document.getElementById('p-keyword').value.trim();
+  const nb = document.getElementById('p-nb').value;
+
+  document.getElementById('pappers-results').innerHTML = '<div class="loading"><span class="spinner"></span>Recherche Pappers en cours…</div>';
+
+  let url = `https://api.pappers.fr/v2/entreprises?api_token=${key}&par_page=${nb}`;
+  if (dept) url += `&departement=${dept}`;
+  if (naf) url += `&code_naf=${naf}`;
+  if (effectif) url += `&tranche_effectif=${effectif}`;
+  if (keyword) url += `&q=${encodeURIComponent(keyword)}`;
+
+  try {
+    const resp = await fetch(url);
+    if (!resp.ok) { throw new Error(`Erreur API Pappers (${resp.status})`); }
+    const data = await resp.json();
+    const results = data.resultats || [];
+    if (results.length === 0) {
+      document.getElementById('pappers-results').innerHTML = '<div class="alert alert-warning">Aucun résultat pour ces critères. Essayez d\'élargir la recherche.</div>';
+      return;
+    }
+    document.getElementById('pappers-results').innerHTML = `
+      <div style="margin-bottom:12px;font-size:13px;color:var(--gray-500);font-family:var(--font-mono)">${results.length} résultat${results.length>1?'s':''} trouvé${results.length>1?'s':''}</div>
+      <div class="pappers-grid">
+        ${results.map(r => {
+          const inCRM = DB.contacts.find(c=>c.siren===r.siren);
+          const nom = (r.nom_entreprise||'').replace(/'/g,"\\'");
+          const naflib = (r.libelle_code_naf||'').replace(/'/g,"\\'");
+          const adr1 = (r.siege?.adresse_ligne_1||'').replace(/'/g,"\\'");
+          const vl = (r.siege?.ville||'').replace(/'/g,"\\'");
+          const cp = (r.siege?.code_postal||'').replace(/'/g,"\\'");
+          const cn = (r.code_naf||'').replace(/'/g,"\\'");
+          const ef = (r.tranche_effectif_salarie||'').replace(/'/g,"\\'");
+          return `<div class="pappers-result">
+            <div class="pr-name">${r.nom_entreprise||'—'}</div>
+            <div class="pr-meta">SIREN ${r.siren||'—'} · ${r.tranche_effectif_salarie||'nc'}</div>
+            <div class="pr-addr">${r.siege?.adresse_ligne_1||''} ${r.siege?.code_postal||''} ${r.siege?.ville||''}</div>
+            <span class="pr-naf">${r.code_naf||''} — ${r.libelle_code_naf||''}</span>
+            ${inCRM
+              ? `<div style="margin-top:6px;font-size:11px;color:var(--green);font-family:var(--font-mono)">✓ Déjà dans le CRM</div>`
+              : `<div style="margin-top:8px"><button class="btn btn-primary btn-sm" onclick="importFromPappers('${r.siren}','${nom}','${naflib}','${adr1}','${vl}','${cp}','${cn}','${ef}')">+ Ajouter au CRM</button></div>`
+            }
+          </div>`;
+        }).join('')}
+      </div>`;
+  } catch(e) {
+    document.getElementById('pappers-results').innerHTML = `<div class="alert alert-warning">Erreur : ${e.message}. Vérifiez votre clé API Pappers et votre connexion.</div>`;
+  }
+}
+
+function importFromPappers(siren, nom, naf, addr1, ville, cp, codeNaf, effectif) {
+  const secteur = guessSecteur(codeNaf);
+  DB.contacts.push({
+    id: nextId(DB.contacts),
+    societe: nom, siren, contact: '', tel: '', email: '',
+    statut: 'froid', entite: 'RESODE', secteur,
+    adresse: `${addr1}, ${cp} ${ville}`.trim(),
+    note: `NAF: ${codeNaf} — ${naf}\nEffectif: ${effectif}\nSource: Pappers`,
+    relance: false, date_relance: '',
+    historique: [{ date: dateNow(), canal: 'Système', texte: `Importé depuis Pappers. NAF ${codeNaf} — ${naf}. Effectif: ${effectif}` }],
+    created: dateNow(), updated: dateNow()
+  });
+  saveData(); updateBadges();
+  searchPappers();
+}
+
+function guessSecteur(code) {
+  if (!code) return 'Autre';
+  if (['3811','3812','3821','3822'].some(x=>code.startsWith(x))) return 'Déchets / Environnement';
+  if (['4120','4312','4311','4391','4399','4321','4322'].some(x=>code.startsWith(x))) return 'BTP / Construction';
+  if (['2561','2562','2920','2410','2550','2219','2312'].some(x=>code.startsWith(x))) return 'Traitement de surfaces';
+  if (['3315','5222','5020'].some(x=>code.startsWith(x))) return 'Naval / Portuaire';
+  if (['8122','3314','3320'].some(x=>code.startsWith(x))) return 'Nettoyage industriel';
+  const n = parseInt(code.replace(/[^0-9]/g,''));
+  if (n >= 1000 && n <= 3399) return 'Industrie manufacturière';
+  return 'Autre';
+}
+
+// ========== COURRIERS ==========
+function renderCourrierContacts() {
+  const sel = document.getElementById('courrier-contact');
+  sel.innerHTML = '<option value="">— Choisir un contact —</option>' +
+    DB.contacts.map(c=>`<option value="${c.id}">${c.societe}${c.contact?' — '+c.contact:''}</option>`).join('');
+}
+
+function genCourrier() {
+  const cid = parseInt(document.getElementById('courrier-contact').value);
+  const type = document.getElementById('courrier-type').value;
+  if (!cid || !type) { alert('Sélectionnez un contact et un type de courrier.'); return; }
+  const c = DB.contacts.find(x=>x.id===cid);
+  const date = new Date().toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'});
+  const dest = c.contact ? c.contact : 'Madame, Monsieur';
+  const texts = {
+    prise_contact: `Objet : Collecte et valorisation de vos déchets industriels — RESODE\n\n${dest},\n\nJe me permets de vous contacter au sujet de la gestion de vos déchets industriels.\n\nRESODE est un opérateur spécialisé dans la collecte, le transport et la valorisation des déchets, basé dans la Métropole Européenne de Lille (Frelinghien). Nous intervenons auprès d'industriels de la région Hauts-de-France pour optimiser leurs flux de déchets, assurer leur conformité réglementaire et valoriser au maximum les matières.\n\nVotre activité (${c.secteur}) génère probablement des flux que nous pourrions prendre en charge efficacement : bennes, collectes régulières, gestion des BSD/BSDA selon votre production.\n\nSeriez-vous disponible pour un bref échange téléphonique afin que je vous présente nos solutions adaptées à votre site ?\n\nBien cordialement,\n\nCédric Lecomte\nRESODE — Collecte, Transport, Valorisation des déchets\n📍 4 rue André Marie Ampère, 59236 Frelinghien\n📞 06 26 82 48 08`,
+    relance: `Objet : Relance — RESODE / Gestion de vos déchets\n\n${dest},\n\nJe me permets de revenir vers vous suite à mon précédent message concernant la gestion de vos déchets industriels.\n\nJe sais que votre agenda est chargé, c'est pourquoi je vous propose simplement un appel de 10 minutes pour vous présenter les solutions RESODE adaptées à votre activité.\n\nPouvez-vous me confirmer votre disponibilité ?\n\nCordialement,\n\nCédric Lecomte\nRESODE\n📞 06 26 82 48 08`,
+    devis: `Objet : Devis RESODE — Collecte et valorisation déchets / ${c.societe}\n\n${dest},\n\nSuite à notre échange, veuillez trouver ci-joint notre proposition commerciale pour la prise en charge de vos déchets industriels.\n\nCe devis comprend :\n→ La collecte régulière de vos déchets selon le planning convenu\n→ Le transport réglementaire avec BSD/BSDA selon la nature des déchets\n→ La valorisation et traçabilité complète\n\nN'hésitez pas à me contacter pour toute question. Ce devis est valable 30 jours.\n\nCordialement,\n\nCédric Lecomte\nRESODE\n📞 06 26 82 48 08`,
+    suivi_devis: `Objet : Suivi devis — RESODE / ${c.societe}\n\n${dest},\n\nJe vous contacte suite à l'envoi de notre devis il y a quelques jours.\n\nAvez-vous eu l'occasion d'en prendre connaissance ? Je reste disponible pour répondre à vos questions ou ajuster notre proposition.\n\nCordialement,\n\nCédric Lecomte — RESODE\n📞 06 26 82 48 08`,
+    merci_client: `Objet : Bienvenue chez RESODE — ${c.societe}\n\n${dest},\n\nJe tenais à vous remercier personnellement pour votre confiance.\n\nNous sommes ravis de vous accompagner dans la gestion de vos déchets industriels. N'hésitez pas à me contacter directement pour toute question.\n\nÀ très bientôt,\n\nCédric Lecomte\nRESODE\n📞 06 26 82 48 08`,
+    amiante: `Objet : Gestion des déchets amiantés — RESODE / CSTMD\n\n${dest},\n\nDans le cadre de votre activité (${c.secteur}), vous êtes peut-être confronté à la gestion de matériaux contenant de l'amiante (MCA) ou de déchets dangereux nécessitant un bordereau BSDA.\n\nRESODE, en partenariat avec CSTMD (transport de marchandises dangereuses ADR), vous propose une prise en charge complète et réglementaire :\n→ Collecte et conditionnement des déchets amiantés\n→ Établissement des BSDA avec traçabilité Trackdéchets\n→ Transport ADR conforme\n→ Élimination en centre agréé\n\nNous intervenons sur toute la région Hauts-de-France.\n\nPuis-je vous appeler pour évaluer vos besoins ?\n\nCordialement,\n\nCédric Lecomte\nRESODE / CSTMD\n📞 06 26 82 48 08`
+  };
+  const txt = texts[type] || '';
+  document.getElementById('courrier-output').innerHTML = `
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+      <strong style="font-size:14px">Courrier généré — ${c.societe}</strong>
+      <div style="display:flex;gap:8px;">
+        <button class="btn btn-secondary btn-sm" onclick="copyCourrier()">📋 Copier</button>
+        <a href="mailto:${c.email||''}?subject=${encodeURIComponent((txt.split('\n')[0]||'').replace('Objet : ',''))}&body=${encodeURIComponent(txt)}" class="btn btn-primary btn-sm" style="text-decoration:none">✉ Ouvrir dans Mail</a>
+      </div>
+    </div>
+    <div class="courrier-box" id="courrier-txt">${txt}</div>`;
+}
+
+function copyCourrier() {
+  const t = document.getElementById('courrier-txt');
+  if (!t) return;
+  navigator.clipboard.writeText(t.textContent).then(()=>alert('Courrier copié dans le presse-papiers !'));
+}
+
+// ========== EXPORT CSV ==========
+function exportCSV() {
+  const cols = ['ID','Société','SIREN','Contact','Téléphone','Email','Statut','Secteur','Entité','Adresse','Relance','Date relance','Note','Créé','Mis à jour'];
+  const rows = DB.contacts.map(c => [c.id, c.societe, c.siren, c.contact, c.tel, c.email, STATUT_LABELS[c.statut], c.secteur, c.entite, c.adresse, c.relance?'OUI':'NON', c.date_relance, (c.note||'').replace(/\n/g,' '), c.created, c.updated]);
+  const csv = [cols, ...rows].map(r => r.map(v=>`"${String(v||'').replace(/"/g,'""')}"`).join(',')).join('\n');
+  const a = document.createElement('a');
+  a.href = 'data:text/csv;charset=utf-8,\uFEFF' + encodeURIComponent(csv);
+  a.download = `RESODE_CRM_${dateNow()}.csv`;
+  a.click();
+}
+
+// ========== INIT ==========
+updateDate();
+renderDashboard();
+updateBadges();
+</script>
+</body>
+</html>
