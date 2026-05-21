@@ -334,7 +334,7 @@ textarea { resize: vertical; min-height: 80px; }
     <div class="nav-section">Outils</div>
     <div class="nav-item" onclick="showPage('pappers')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-      Prospection Pappers
+      Prospection Entreprises
     </div>
     <div class="nav-item" onclick="showPage('courriers')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
@@ -444,18 +444,15 @@ textarea { resize: vertical; min-height: 80px; }
 
     <!-- PAPPERS -->
     <div class="page" id="page-pappers">
-      <div class="alert alert-info">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-        Outil de prospection connecté à l'API Pappers. Clé API gratuite sur <strong>pappers.fr/api</strong> (100 req/jour). Entrez votre clé ci-dessous.
+      <div class="alert alert-success">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9 12l2 2 4-4"/></svg>
+        Outil de prospection connecté à l'<strong>API officielle du gouvernement</strong> (annuaire-entreprises.data.gouv.fr) — gratuit, illimité, sans clé API. Données INSEE/INPI.
       </div>
       <div class="card" style="margin-bottom:16px;">
         <div class="card-header"><div class="card-title">🔍 Recherche de prospects</div></div>
         <div class="card-body">
           <div class="form-grid" style="margin-bottom:14px;">
-            <div class="form-group">
-              <label>Clé API Pappers</label>
-              <input type="text" id="pappers-key" placeholder="Votre clé API…" oninput="savePappersKey()">
-            </div>
+            
             <div class="form-group">
               <label>Département / Code postal</label>
               <input type="text" id="p-dept" placeholder="ex: 59, 62, Nord…" value="59">
@@ -465,39 +462,39 @@ textarea { resize: vertical; min-height: 80px; }
               <select id="p-naf">
                 <option value="">— Tous —</option>
                 <optgroup label="🏗️ BTP / Construction">
-                  <option value="4120A">4120A — Construction maisons individuelles</option>
-                  <option value="4120B">4120B — Construction autres bâtiments</option>
-                  <option value="4312A">4312A — Travaux terrassement courants</option>
-                  <option value="4322A">4322A — Travaux plomberie</option>
-                  <option value="4399C">4399C — Travaux de couverture</option>
-                  <option value="4391A">4391A — Travaux charpente</option>
-                  <option value="4110A">4110A — Promotion immobilière logements</option>
+                  <option value="4120.A">4120A — Construction maisons individuelles</option>
+                  <option value="4120.B">4120B — Construction autres bâtiments</option>
+                  <option value="4312.A">4312A — Travaux terrassement courants</option>
+                  <option value="4322.A">4322A — Travaux plomberie</option>
+                  <option value="4399.C">4399C — Travaux de couverture</option>
+                  <option value="4391.A">4391A — Travaux charpente</option>
+                  <option value="4110.A">4110A — Promotion immobilière logements</option>
                 </optgroup>
                 <optgroup label="🏭 Industrie / Fabrication">
-                  <option value="2561Z">2561Z — Traitement/revêtement métaux</option>
-                  <option value="2562B">2562B — Décolletage</option>
-                  <option value="2410Z">2410Z — Sidérurgie</option>
-                  <option value="2550A">2550A — Forge, estampage, matriçage</option>
-                  <option value="3315Z">3315Z — Réparation navale</option>
-                  <option value="2920Z">2920Z — Fabrication carrosseries</option>
-                  <option value="2219Z">2219Z — Fabrication autres articles caoutchouc</option>
-                  <option value="2312Z">2312Z — Façonnage/transformation verre plat</option>
+                  <option value="2561.Z">2561Z — Traitement/revêtement métaux</option>
+                  <option value="2562.B">2562B — Décolletage</option>
+                  <option value="2410.Z">2410Z — Sidérurgie</option>
+                  <option value="2550.A">2550A — Forge, estampage, matriçage</option>
+                  <option value="3315.Z">3315Z — Réparation navale</option>
+                  <option value="2920.Z">2920Z — Fabrication carrosseries</option>
+                  <option value="2219.Z">2219Z — Fabrication autres articles caoutchouc</option>
+                  <option value="2312.Z">2312Z — Façonnage/transformation verre plat</option>
                 </optgroup>
                 <optgroup label="♻️ Déchets / Environnement">
-                  <option value="3811Z">3811Z — Collecte déchets non dangereux</option>
-                  <option value="3812Z">3812Z — Collecte déchets dangereux</option>
-                  <option value="3821Z">3821Z — Traitement déchets non dangereux</option>
-                  <option value="3822Z">3822Z — Traitement déchets dangereux</option>
+                  <option value="3811.Z">3811Z — Collecte déchets non dangereux</option>
+                  <option value="3812.Z">3812Z — Collecte déchets dangereux</option>
+                  <option value="3821.Z">3821Z — Traitement déchets non dangereux</option>
+                  <option value="3822.Z">3822Z — Traitement déchets dangereux</option>
                 </optgroup>
                 <optgroup label="🔧 Maintenance / Services ind.">
-                  <option value="3314Z">3314Z — Réparation équipements électriques</option>
-                  <option value="3320A">3320A — Installation équipements industriels</option>
-                  <option value="8122Z">8122Z — Nettoyage industriel</option>
-                  <option value="4321A">4321A — Travaux d'installation électrique</option>
+                  <option value="3314.Z">3314Z — Réparation équipements électriques</option>
+                  <option value="3320.A">3320A — Installation équipements industriels</option>
+                  <option value="8122.Z">8122Z — Nettoyage industriel</option>
+                  <option value="4321.A">4321A — Travaux d'installation électrique</option>
                 </optgroup>
                 <optgroup label="🚢 Naval / Portuaire">
-                  <option value="5222Z">5222Z — Services auxiliaires des transports par eau</option>
-                  <option value="5020Z">5020Z — Transports maritimes côtiers passagers</option>
+                  <option value="5222.Z">5222Z — Services auxiliaires des transports par eau</option>
+                  <option value="5020.Z">5020Z — Transports maritimes côtiers passagers</option>
                 </optgroup>
               </select>
             </div>
@@ -505,15 +502,17 @@ textarea { resize: vertical; min-height: 80px; }
               <label>Effectif (tranche)</label>
               <select id="p-effectif">
                 <option value="">— Tous —</option>
-                <option value="1">0 salarié</option>
-                <option value="2">1-2 salariés</option>
-                <option value="3">3-5 salariés</option>
-                <option value="11">6-9 salariés</option>
-                <option value="12">10-19 salariés</option>
-                <option value="21">20-49 salariés</option>
-                <option value="22">50-99 salariés</option>
-                <option value="31">100-199 salariés</option>
-                <option value="32">200-499 salariés</option>
+                <option value="NN">0 salarié</option>
+                <option value="01">1-2 salariés</option>
+                <option value="02">3-5 salariés</option>
+                <option value="03">6-9 salariés</option>
+                <option value="11">10-19 salariés</option>
+                <option value="12">20-49 salariés</option>
+                <option value="21">50-99 salariés</option>
+                <option value="22">100-199 salariés</option>
+                <option value="31">200-499 salariés</option>
+                <option value="32">500-999 salariés</option>
+                <option value="41">1000-1999 salariés</option>
               </select>
             </div>
             <div class="form-group">
@@ -535,11 +534,11 @@ textarea { resize: vertical; min-height: 80px; }
               Rechercher
             </button>
             <div style="display:flex;gap:8px;flex-wrap:wrap;" id="naf-presets">
-              <button class="btn btn-secondary btn-sm" onclick="setNaf('4312A')">Terrassement 59</button>
-              <button class="btn btn-secondary btn-sm" onclick="setNaf('2561Z')">Traitement métaux</button>
-              <button class="btn btn-secondary btn-sm" onclick="setNaf('8122Z')">Nettoyage indus.</button>
-              <button class="btn btn-secondary btn-sm" onclick="setNaf('3812Z')">Déchets dangereux</button>
-              <button class="btn btn-secondary btn-sm" onclick="setNaf('3315Z')">Réparation navale</button>
+              <button class="btn btn-secondary btn-sm" onclick="setNaf('43.12A')">Terrassement 59</button>
+              <button class="btn btn-secondary btn-sm" onclick="setNaf('25.61Z')">Traitement métaux</button>
+              <button class="btn btn-secondary btn-sm" onclick="setNaf('81.22Z')">Nettoyage indus.</button>
+              <button class="btn btn-secondary btn-sm" onclick="setNaf('38.12Z')">Déchets dangereux</button>
+              <button class="btn btn-secondary btn-sm" onclick="setNaf('33.15Z')">Réparation navale</button>
             </div>
           </div>
         </div>
@@ -668,7 +667,7 @@ function showPage(p) {
   const navMap = { dashboard:0, pipeline:1, contacts:2, relances:3, pappers:4, courriers:5 };
   const items = document.querySelectorAll('.nav-item');
   if (navMap[p] !== undefined) items[navMap[p]].classList.add('active');
-  const titles = { dashboard:'Tableau de bord', pipeline:'Pipeline commercial', contacts:'Tous les contacts', relances:'Relances', pappers:'Prospection Pappers', courriers:'Courriers types' };
+  const titles = { dashboard:'Tableau de bord', pipeline:'Pipeline commercial', contacts:'Tous les contacts', relances:'Relances', pappers:'Prospection Entreprises', courriers:'Courriers types' };
   document.getElementById('page-title').innerHTML = titles[p] + ' <span id="page-date"></span>';
   updateDate();
   if (p === 'dashboard') renderDashboard();
@@ -1024,73 +1023,84 @@ function setNaf(code) {
 }
 
 async function searchPappers() {
-  const key = document.getElementById('pappers-key').value.trim();
-  if (!key) { document.getElementById('pappers-results').innerHTML = '<div class="alert alert-warning">⚠ Entrez votre clé API Pappers pour lancer une recherche.</div>'; return; }
   const dept = document.getElementById('p-dept').value.trim();
   const naf = document.getElementById('p-naf').value;
   const effectif = document.getElementById('p-effectif').value;
   const keyword = document.getElementById('p-keyword').value.trim();
-  const nb = document.getElementById('p-nb').value;
+  const nb = document.getElementById('p-nb').value || '20';
 
-  document.getElementById('pappers-results').innerHTML = '<div class="loading"><span class="spinner"></span>Recherche Pappers en cours…</div>';
+  document.getElementById('pappers-results').innerHTML = '<div class="loading"><span class="spinner"></span>Recherche en cours…</div>';
 
-  let url = `https://api.pappers.fr/v2/entreprises?api_token=${key}&par_page=${nb}`;
-  if (dept) url += `&departement=${dept}`;
-  if (naf) url += `&code_naf=${naf}`;
-  if (effectif) url += `&tranche_effectif=${effectif}`;
+  let url = `https://recherche-entreprises.api.gouv.fr/search?per_page=${nb}&page=1`;
   if (keyword) url += `&q=${encodeURIComponent(keyword)}`;
+  if (dept) url += `&departement=${encodeURIComponent(dept)}`;
+  if (naf) url += `&activite_principale=${encodeURIComponent(naf)}`;
+  if (effectif) url += `&tranche_effectif_salarie=${encodeURIComponent(effectif)}`;
 
   try {
-    const WORKER_URL = 'https://hidden-meadow-7e85.p2x58k64fh.workers.dev';
-    const pappersParams = url.replace('https://api.pappers.fr/v2/entreprises?', '');
-    const proxyUrl = WORKER_URL + '?' + pappersParams;
-    const resp = await fetch(proxyUrl);
-    if (!resp.ok) { throw new Error(`Erreur API Pappers (${resp.status})`); }
+    const resp = await fetch(url, { headers: { 'Accept': 'application/json' } });
+    if (!resp.ok) { throw new Error(`Erreur API (${resp.status})`); }
     const data = await resp.json();
-    const results = data.resultats || [];
+    const results = data.results || [];
+    const total = data.total_results || 0;
+
     if (results.length === 0) {
-      document.getElementById('pappers-results').innerHTML = '<div class="alert alert-warning">Aucun résultat pour ces critères. Essayez d\'élargir la recherche.</div>';
+      document.getElementById('pappers-results').innerHTML = '<div class="alert alert-warning">Aucun résultat pour ces critères. Essayez d'élargir la recherche.</div>';
       return;
     }
+
     document.getElementById('pappers-results').innerHTML = `
-      <div style="margin-bottom:12px;font-size:13px;color:var(--gray-500);font-family:var(--font-mono)">${results.length} résultat${results.length>1?'s':''} trouvé${results.length>1?'s':''}</div>
+      <div style="margin-bottom:12px;font-size:13px;color:var(--gray-500);font-family:var(--font-mono)">
+        ${total.toLocaleString('fr-FR')} entreprise${total>1?'s':''} trouvée${total>1?'s':''} — affichage des ${results.length} premières
+      </div>
       <div class="pappers-grid">
         ${results.map(r => {
-          const inCRM = DB.contacts.find(c=>c.siren===r.siren);
-          const nom = (r.nom_entreprise||'').replace(/'/g,"\\'");
-          const naflib = (r.libelle_code_naf||'').replace(/'/g,"\\'");
-          const adr1 = (r.siege?.adresse_ligne_1||'').replace(/'/g,"\\'");
-          const vl = (r.siege?.ville||'').replace(/'/g,"\\'");
-          const cp = (r.siege?.code_postal||'').replace(/'/g,"\\'");
-          const cn = (r.code_naf||'').replace(/'/g,"\\'");
-          const ef = (r.tranche_effectif_salarie||'').replace(/'/g,"\\'");
+          const inCRM = DB.contacts.find(c => c.siren === r.siren);
+          const nom = (r.nom_complet||'').replace(/'/g,"\'");
+          const nafCode = (r.activite_principale||'').replace(/'/g,"\'");
+          const nafLib = (r.libelle_activite_principale||'').replace(/'/g,"\'");
+          const adresse = (r.siege?.adresse_complete||r.siege?.adresse_ligne_1||'').replace(/'/g,"\'");
+          const ville = (r.siege?.libelle_commune||r.siege?.ville||'').replace(/'/g,"\'");
+          const cp = (r.siege?.code_postal||'').replace(/'/g,"\'");
+          const eff = (r.tranche_effectif_salarie||'').replace(/'/g,"\'");
+          const dirigeant = r.dirigeants && r.dirigeants.length > 0
+            ? (r.dirigeants[0].prenom||'') + ' ' + (r.dirigeants[0].nom||r.dirigeants[0].nom_complet||'')
+            : '';
           return `<div class="pappers-result">
-            <div class="pr-name">${r.nom_entreprise||'—'}</div>
-            <div class="pr-meta">SIREN ${r.siren||'—'} · ${r.tranche_effectif_salarie||'nc'}</div>
-            <div class="pr-addr">${r.siege?.adresse_ligne_1||''} ${r.siege?.code_postal||''} ${r.siege?.ville||''}</div>
-            <span class="pr-naf">${r.code_naf||''} — ${r.libelle_code_naf||''}</span>
+            <div class="pr-name">${r.nom_complet||'—'}</div>
+            <div class="pr-meta">SIREN ${r.siren||'—'} · ${eff||'effectif nc'}</div>
+            ${dirigeant ? `<div class="pr-meta" style="color:var(--green-dark);margin-top:3px">👤 ${dirigeant.trim()}</div>` : ''}
+            <div class="pr-addr">${r.siege?.adresse_complete||''} ${cp} ${r.siege?.libelle_commune||''}</div>
+            <span class="pr-naf">${r.activite_principale||''} — ${r.libelle_activite_principale||''}</span>
             ${inCRM
               ? `<div style="margin-top:6px;font-size:11px;color:var(--green);font-family:var(--font-mono)">✓ Déjà dans le CRM</div>`
-              : `<div style="margin-top:8px"><button class="btn btn-primary btn-sm" onclick="importFromPappers('${r.siren}','${nom}','${naflib}','${adr1}','${vl}','${cp}','${cn}','${ef}')">+ Ajouter au CRM</button></div>`
+              : `<div style="margin-top:8px"><button class="btn btn-primary btn-sm" onclick="importFromGouv('${r.siren}','${nom}','${nafLib}','${adresse}','${ville}','${cp}','${nafCode}','${eff}','${dirigeant.trim().replace(/'/g,"\'")}')">+ Ajouter au CRM</button></div>`
             }
           </div>`;
         }).join('')}
       </div>`;
   } catch(e) {
-    document.getElementById('pappers-results').innerHTML = `<div class="alert alert-warning">Erreur : ${e.message}. Vérifiez votre clé API Pappers et votre connexion.</div>`;
+    document.getElementById('pappers-results').innerHTML = `<div class="alert alert-warning">Erreur : ${e.message}. Vérifiez votre connexion internet.</div>`;
   }
 }
 
+
 function importFromPappers(siren, nom, naf, addr1, ville, cp, codeNaf, effectif) {
+  importFromGouv(siren, nom, naf, addr1, ville, cp, codeNaf, effectif, '');
+}
+
+function importFromGouv(siren, nom, naf, adresse, ville, cp, codeNaf, effectif, dirigeant) {
   const secteur = guessSecteur(codeNaf);
   DB.contacts.push({
     id: nextId(DB.contacts),
-    societe: nom, siren, contact: '', tel: '', email: '',
+    societe: nom, siren,
+    contact: dirigeant || '',
+    tel: '', email: '',
     statut: 'froid', entite: 'RESODE', secteur,
-    adresse: `${addr1}, ${cp} ${ville}`.trim(),
-    note: `NAF: ${codeNaf} — ${naf}\nEffectif: ${effectif}\nSource: Pappers`,
+    adresse: adresse ? `${adresse}, ${cp} ${ville}`.trim() : `${cp} ${ville}`.trim(),
+    note: `NAF: ${codeNaf} — ${naf}\nEffectif: ${effectif}\nSource: Annuaire Entreprises (INSEE/INPI)`,
     relance: false, date_relance: '',
-    historique: [{ date: dateNow(), canal: 'Système', texte: `Importé depuis Pappers. NAF ${codeNaf} — ${naf}. Effectif: ${effectif}` }],
+    historique: [{ date: dateNow(), canal: 'Système', texte: `Importé depuis l'annuaire officiel. NAF ${codeNaf} — ${naf}. Effectif: ${effectif}${dirigeant ? '. Dirigeant: ' + dirigeant : ''}` }],
     created: dateNow(), updated: dateNow()
   });
   saveData(); updateBadges();
@@ -1099,12 +1109,13 @@ function importFromPappers(siren, nom, naf, addr1, ville, cp, codeNaf, effectif)
 
 function guessSecteur(code) {
   if (!code) return 'Autre';
-  if (['3811','3812','3821','3822'].some(x=>code.startsWith(x))) return 'Déchets / Environnement';
-  if (['4120','4312','4311','4391','4399','4321','4322'].some(x=>code.startsWith(x))) return 'BTP / Construction';
-  if (['2561','2562','2920','2410','2550','2219','2312'].some(x=>code.startsWith(x))) return 'Traitement de surfaces';
-  if (['3315','5222','5020'].some(x=>code.startsWith(x))) return 'Naval / Portuaire';
-  if (['8122','3314','3320'].some(x=>code.startsWith(x))) return 'Nettoyage industriel';
-  const n = parseInt(code.replace(/[^0-9]/g,''));
+  const c = code.replace('.',''); // normalize 33.14Z -> 3314Z
+  if (['3811','3812','3821','3822'].some(x=>c.startsWith(x))) return 'Déchets / Environnement';
+  if (['4120','4312','4311','4391','4399','4321','4322'].some(x=>c.startsWith(x))) return 'BTP / Construction';
+  if (['2561','2562','2920','2410','2550','2219','2312'].some(x=>c.startsWith(x))) return 'Traitement de surfaces';
+  if (['3315','5222','5020'].some(x=>c.startsWith(x))) return 'Naval / Portuaire';
+  if (['8122','3314','3320'].some(x=>c.startsWith(x))) return 'Nettoyage industriel';
+  const n = parseInt(c.replace(/[^0-9]/g,''));
   if (n >= 1000 && n <= 3399) return 'Industrie manufacturière';
   return 'Autre';
 }
