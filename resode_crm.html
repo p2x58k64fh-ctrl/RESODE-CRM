@@ -1041,11 +1041,12 @@ async function searchPappers() {
   if (keyword) url += `&q=${encodeURIComponent(keyword)}`;
 
   try {
-    const proxyUrl = 'https://api.allorigins.win/get?url=' + encodeURIComponent(url);
+    const WORKER_URL = 'https://hidden-meadow-7e85.p2x58k64fh.workers.dev';
+    const pappersParams = url.replace('https://api.pappers.fr/v2/entreprises?', '');
+    const proxyUrl = WORKER_URL + '?' + pappersParams;
     const resp = await fetch(proxyUrl);
     if (!resp.ok) { throw new Error(`Erreur API Pappers (${resp.status})`); }
-    const wrapper = await resp.json();
-    const data = JSON.parse(wrapper.contents);
+    const data = await resp.json();
     const results = data.resultats || [];
     if (results.length === 0) {
       document.getElementById('pappers-results').innerHTML = '<div class="alert alert-warning">Aucun résultat pour ces critères. Essayez d\'élargir la recherche.</div>';
